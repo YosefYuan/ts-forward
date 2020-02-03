@@ -45,3 +45,5 @@ function addSecond(first: object | NumberObj, second: object | NumberObj) {
   }
   return 0;
 }
+
+export default {};
