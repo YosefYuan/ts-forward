@@ -1,12 +1,23 @@
 {
-  "name": "ch9-import",
+  "name": "ts-forward",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "parcel ./src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YosefYuan/ts-forward.git"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YosefYuan/ts-forward/issues"
+  },
+  "homepage": "https://github.com/YosefYuan/ts-forward#readme",
+  "devDependencies": {
+    "parcel": "^2.0.0-alpha.3.2"
+  }
 }
