@@ -1,5 +1,5 @@
-namespace Home {
-  class Header {
+namespace Components {
+  export class Header {
     constructor() {
       const Elem = document.createElement('div');
       Elem.innerText = 'This is Header';
@@ -7,7 +7,7 @@ namespace Home {
     }
   }
 
-  class Content {
+  export class Content {
     constructor() {
       const Elem = document.createElement('div');
       Elem.innerText = 'This is Content';
@@ -15,19 +15,11 @@ namespace Home {
     }
   }
 
-  class Footer {
+  export class Footer {
     constructor() {
       const Elem = document.createElement('div');
       Elem.innerText = 'This is Footer';
       document.body.appendChild(Elem);
-    }
-  }
-
-  export class Page {
-    constructor() {
-      new Header();
-      new Content();
-      new Footer();
     }
   }
 }

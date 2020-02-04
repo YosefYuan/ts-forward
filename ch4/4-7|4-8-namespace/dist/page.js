@@ -1,6 +1,6 @@
 "use strict";
-var Home;
-(function (Home) {
+var Components;
+(function (Components) {
     var Header = /** @class */ (function () {
         function Header() {
             var Elem = document.createElement('div');
@@ -9,6 +9,7 @@ var Home;
         }
         return Header;
     }());
+    Components.Header = Header;
     var Content = /** @class */ (function () {
         function Content() {
             var Elem = document.createElement('div');
@@ -17,6 +18,7 @@ var Home;
         }
         return Content;
     }());
+    Components.Content = Content;
     var Footer = /** @class */ (function () {
         function Footer() {
             var Elem = document.createElement('div');
@@ -25,11 +27,15 @@ var Home;
         }
         return Footer;
     }());
+    Components.Footer = Footer;
+})(Components || (Components = {}));
+var Home;
+(function (Home) {
     var Page = /** @class */ (function () {
         function Page() {
-            new Header();
-            new Content();
-            new Footer();
+            new Components.Header();
+            new Components.Content();
+            new Components.Footer();
         }
         return Page;
     }());
