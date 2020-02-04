@@ -19,5 +19,8 @@
   "homepage": "https://github.com/YosefYuan/ts-forward#readme",
   "devDependencies": {
     "parcel": "^2.0.0-alpha.3.2"
+  },
+  "dependencies": {
+    "jquery": "^3.4.1"
   }
 }
