@@ -1,5 +1,5 @@
 enum test {
-  one,
+  one = 4,
   two,
   three
 }
