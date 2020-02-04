@@ -1,2 +1,3 @@
-const a: string = 'a';
-console.log('a', a);
+$(function() {
+  $('body').html('<div>123</div>');
+});
