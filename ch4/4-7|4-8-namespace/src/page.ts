@@ -1,3 +1,4 @@
+/// <reference path="components.ts" />
 namespace Home {
   export class Page {
     constructor() {
