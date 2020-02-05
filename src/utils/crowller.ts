@@ -2,14 +2,13 @@
 import fs from 'fs';
 import path from 'path';
 import superagent from 'superagent';
-import DellAnalyzer from './dellAnalyzer';
 
 export interface Analyzer {
   analyze: (html: string, filePath: string) => string;
 }
 
 export default class Crowller {
-  private filePath = path.resolve(__dirname, '../data/course.json');
+  private filePath = path.resolve(__dirname, '../../data/course.json');
 
   async getRawHtml() {
     const result = await superagent.get(this.url);
@@ -30,10 +29,3 @@ export default class Crowller {
     this.initSpiderProcess();
   }
 }
-
-// https://git.imooc.com/coding-412/source-code 密码更新地址
-const secret = 'secretKey';
-const url = `http://www.dell-lee.com/typescript/demo.html?secret=${secret}`;
-
-const anylyzer = DellAnalyzer.getInstance();
-new Crowller(url, anylyzer);

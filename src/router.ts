@@ -1,8 +1,9 @@
-import { Router, Request, Response } from 'express';
-import DellAnalyzer from './dellAnalyzer';
-import Crowller from './crowller';
 import fs from 'fs';
 import path from 'path';
+import { Router, Request, Response, NextFunction } from 'express';
+import Analyzer from './utils/analyzer';
+import Crowller from './utils/crowller';
+import { getReponseData } from './utils/util';
 
 const router = Router();
 interface CustomRequest extends Request {
@@ -11,7 +12,16 @@ interface CustomRequest extends Request {
   };
 }
 
-router.get('/', (req: Request, res: Response) => {
+const checkIfLogin = (req: Request, res: Response, next: NextFunction) => {
+  const isLogin = req.session ? req.session.login : false;
+  if (isLogin) {
+    next();
+  } else {
+    res.json(getReponseData(false, 'Please login in at first'));
+  }
+};
+
+router.get('/', (req: CustomRequest, res: Response) => {
   const isLogin = req.session ? req.session.login : false;
   if (isLogin) {
     res.send(`<html>
@@ -33,54 +43,44 @@ router.get('/', (req: Request, res: Response) => {
   }
 });
 
-router.get('/logout', (req: Request, res: Response) => {
+router.get('/logout', (req: CustomRequest, res: Response) => {
   if (req.session) {
     req.session.login = undefined;
     res.redirect('/');
   }
 });
 
-router.post('/login', (req: Request, res: Response) => {
+router.post('/login', (req: CustomRequest, res: Response) => {
   const { password } = req.body;
   const isLogin = req.session ? req.session.login : false;
   if (isLogin) {
-    res.send('already login');
+    res.json(getReponseData(false, 'already login'));
   } else {
     if (password === '123' && req.session) {
       req.session.login = true;
-      res.send('login success');
+      res.json(getReponseData(true));
     } else {
-      res.send('login fail');
+      res.json(getReponseData(false, 'login fail'));
     }
   }
 });
 
-router.get('/getData', (req: CustomRequest, res: Response) => {
-  const isLogin = req.session ? req.session.login : false;
-  if (isLogin) {
-    // https://git.imooc.com/coding-412/source-code 密码更新地址
-    const secret = 'secretKey';
-    const url = `http://www.dell-lee.com/typescript/demo.html?secret=${secret}`;
-    const anylyzer = DellAnalyzer.getInstance();
-    new Crowller(url, anylyzer);
-    res.send('getData success');
-  } else {
-    res.send('Please crawl content after login');
-  }
+router.get('/getData', checkIfLogin, (req: CustomRequest, res: Response) => {
+  // https://git.imooc.com/coding-412/source-code 密码更新地址
+  const secret = 'secretKey';
+  const url = `http://www.dell-lee.com/typescript/demo.html?secret=${secret}`;
+  const anylyzer = Analyzer.getInstance();
+  new Crowller(url, anylyzer);
+  res.json(getReponseData(true));
 });
 
-router.get('/showData', (req: CustomRequest, res: Response) => {
-  const isLogin = req.session ? req.session.login : false;
-  if (isLogin) {
-    try {
-      const position = path.resolve(__dirname, '../data/course.json');
-      const content = fs.readFileSync(position, 'utf8');
-      res.send(content);
-    } catch {
-      res.send('crawl no content ever');
-    }
-  } else {
-    res.send('Please login in at first!');
+router.get('/showData', checkIfLogin, (req: CustomRequest, res: Response) => {
+  try {
+    const position = path.resolve(__dirname, '../data/course.json');
+    const content = fs.readFileSync(position, 'utf8');
+    res.json(getReponseData(JSON.parse(content)));
+  } catch {
+    res.json(getReponseData(false, 'no content'));
   }
 });
 
