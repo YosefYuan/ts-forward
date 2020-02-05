@@ -3,6 +3,12 @@ import DellAnalyzer from './dellAnalyzer';
 import Crowller from './crowller';
 
 const router = Router();
+interface CustomRequest extends Request {
+  body: {
+    [key: string]: string | undefined;
+  };
+}
+
 router.get('/', (req: Request, res: Response) => {
   res.send(`<html>
   <body>
@@ -13,7 +19,7 @@ router.get('/', (req: Request, res: Response) => {
   <body>
   </html>`);
 });
-router.post('/getData', (req: Request, res: Response) => {
+router.post('/getData', (req: CustomRequest, res: Response) => {
   if (req.body.password === '123') {
     // https://git.imooc.com/coding-412/source-code 密码更新地址
     const secret = 'secretKey';
@@ -22,7 +28,7 @@ router.post('/getData', (req: Request, res: Response) => {
     new Crowller(url, anylyzer);
     res.send('getData success');
   } else {
-    res.send('getData Error');
+    res.send(`${req.studentName} getData Error`);
   }
 });
 
