@@ -1,14 +1,28 @@
-function paramDecorator(target: any, method: string, paramIndex: number) {
-  console.log('target', target);
-  console.log('method', typeof method); // method_name -> string
-  console.log('paramIndex', paramIndex);
-}
+const userInfo: any = undefined;
 
+function catchError(errMsg: string) {
+  return function(target: any, key: string, descriptor: PropertyDescriptor) {
+    const fn = descriptor.value;
+    descriptor.value = function() {
+      try {
+        fn();
+      } catch (e) {
+        console.log(errMsg);
+      }
+    };
+  };
+}
 class Test {
-  getInfo(name: string, @paramDecorator age: number) {
-    console.log(name, age);
+  @catchError('get userInfo.name error')
+  getName() {
+    return userInfo.name;
+  }
+  @catchError('get userInfo.age error')
+  getAge() {
+    return userInfo.age;
   }
 }
 
 const test = new Test();
-test.getInfo('yosef', 31);
+test.getName();
+test.getAge();
