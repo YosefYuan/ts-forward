@@ -1,4 +1,4 @@
-function getNameDescriptor(
+function visitDecorator(
   target: any,
   key: string,
   descriptor: PropertyDescriptor
@@ -6,15 +6,23 @@ function getNameDescriptor(
   console.log('target', target);
   console.log('key', key);
   console.log('descriptor', descriptor);
+  // descriptor.writable = false;
 }
 
 class Test {
-  name: string;
+  private _name: string;
   constructor(name: string) {
-    this.name = name;
+    this._name = name;
   }
-  @getNameDescriptor
-  getName() {
-    return this.name;
+  get name() {
+    return this._name;
+  }
+  @visitDecorator
+  set name(name: string) {
+    this._name = name;
   }
 }
+
+const test = new Test('yosef');
+test.name = 'yuan';
+console.log(test.name);
