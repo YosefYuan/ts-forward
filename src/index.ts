@@ -1,19 +1,20 @@
-function testDecorator() {
-  return function<T extends new (...args: any[]) => any>(constructor: T) {
-    return class extends constructor {
-      name = 'yuan';
-      getName() {
-        return this.name;
-      }
-    };
-  };
+function getNameDescriptor(
+  target: any,
+  key: string,
+  descriptor: PropertyDescriptor
+) {
+  console.log('target', target);
+  console.log('key', key);
+  console.log('descriptor', descriptor);
 }
 
-const Test = testDecorator()(
-  class {
-    constructor(public name: string) {}
+class Test {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
   }
-);
-
-const test = new Test('yosef');
-console.log(test.getName());
+  @getNameDescriptor
+  getName() {
+    return this.name;
+  }
+}
