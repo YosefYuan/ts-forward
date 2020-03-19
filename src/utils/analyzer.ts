@@ -1,6 +1,6 @@
-import fs from 'fs';
-import cheerio from 'cheerio';
-import { Analyzer } from './crowller';
+import fs from "fs";
+import cheerio from "cheerio";
+import { Analyzer } from "./crowller";
 
 interface Course {
   title: string;
@@ -28,16 +28,16 @@ export default class DellAnalyzer implements Analyzer {
 
   private getCourseInfo(html: string) {
     const $ = cheerio.load(html);
-    const courseItems = $('.course-item');
+    const courseItems = $(".course-item");
     const courseInfos: Course[] = [];
     courseItems.map((index, element) => {
-      const descs = $(element).find('.course-desc');
+      const descs = $(element).find(".course-desc");
       const title = descs.eq(0).text();
       const count = parseInt(
         descs
           .eq(1)
           .text()
-          .split('：')[1],
+          .split("：")[1],
         10
       );
       courseInfos.push({ title, count });
@@ -52,7 +52,10 @@ export default class DellAnalyzer implements Analyzer {
   private generateJsonContent(courseInfo: CourseResult, filePath: string) {
     let fileContent: Content = {};
     if (fs.existsSync(filePath)) {
-      fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      try {
+        // 当无原始内容时 JSON.parse 会报错
+        fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+      } catch {}
     }
     fileContent[courseInfo.time] = courseInfo.data;
     return fileContent;
