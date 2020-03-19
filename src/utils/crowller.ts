@@ -1,14 +1,14 @@
 // ts -> .d.ts 翻译文件 @types/superagent -> js
-import fs from 'fs';
-import path from 'path';
-import superagent from 'superagent';
+import fs from "fs";
+import path from "path";
+import superagent from "superagent";
 
 export interface Analyzer {
   analyze: (html: string, filePath: string) => string;
 }
 
 export default class Crowller {
-  private filePath = path.resolve(__dirname, '../../data/course.json');
+  private filePath = path.resolve(__dirname, "../../data/course.json");
 
   async getRawHtml() {
     const result = await superagent.get(this.url);
